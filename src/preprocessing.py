@@ -1,34 +1,31 @@
 import pandas as pd
+import numpy as np
 
 def load_data(filepath):
-    """Charge les données"""
+    """Charge les donnees depuis un fichier CSV"""
     return pd.read_csv(filepath)
-
-def handle_missing_values(df):
-    """Gère les valeurs manquantes"""
-    df = df.copy()
-    
-    # Imputation simple par le mode pour les catégorielles
-    for col in ['Teacher_Quality', 'Parental_Education_Level', 'Distance_from_Home']:
-        if df[col].isna().sum() > 0:
-            df[col].fillna(df[col].mode()[0], inplace=True)
-    
-    return df
 
 def handle_outliers(df):
     """Traite les outliers"""
     df = df.copy()
-    
-    # Cap Exam_Score à 100
     df.loc[df['Exam_Score'] > 100, 'Exam_Score'] = 100
-    
     return df
 
-def encode_categorical(df):
-    """Encode les variables catégorielles"""
-    df = df.copy()
+def preprocess_pipeline(filepath):
+    """Pipeline complet de preprocessing"""
     
-    # Encodage ordinal
+    # 1. Chargement
+    df = load_data(filepath)
+    
+    # 2. Correction des outliers
+    df = handle_outliers(df)
+    
+    # 3. REMPLISSAGE DES VALEURS MANQUANTES (SANS inplace)
+    df['Teacher_Quality'] = df['Teacher_Quality'].fillna(df['Teacher_Quality'].mode()[0])
+    df['Parental_Education_Level'] = df['Parental_Education_Level'].fillna(df['Parental_Education_Level'].mode()[0])
+    df['Distance_from_Home'] = df['Distance_from_Home'].fillna(df['Distance_from_Home'].mode()[0])
+    
+    # 4. ENCODAGE ORDINAL
     ordinal_mappings = {
         'Parental_Involvement': {'Low': 0, 'Medium': 1, 'High': 2},
         'Access_to_Resources': {'Low': 0, 'Medium': 1, 'High': 2},
@@ -42,19 +39,12 @@ def encode_categorical(df):
     for col, mapping in ordinal_mappings.items():
         df[col] = df[col].map(mapping)
     
-    # One-hot encoding pour les autres
-    df = pd.get_dummies(df, columns=['School_Type', 'Peer_Influence', 
-                                     'Extracurricular_Activities', 'Internet_Access',
-                                     'Learning_Disabilities', 'Gender'], 
-                        drop_first=True)
-    
-    return df
-
-def preprocess_pipeline(filepath):
-    """Pipeline complet de preprocessing"""
-    df = load_data(filepath)
-    df = handle_missing_values(df)
-    df = handle_outliers(df)
-    df = encode_categorical(df)
+    # 5. ONE-HOT ENCODING
+    df = pd.get_dummies(df, columns=['School_Type'], drop_first=True)
+    df = pd.get_dummies(df, columns=['Peer_Influence'], drop_first=True)
+    df = pd.get_dummies(df, columns=['Extracurricular_Activities'], drop_first=True)
+    df = pd.get_dummies(df, columns=['Internet_Access'], drop_first=True)
+    df = pd.get_dummies(df, columns=['Learning_Disabilities'], drop_first=True)
+    df = pd.get_dummies(df, columns=['Gender'], drop_first=True)
     
     return df
