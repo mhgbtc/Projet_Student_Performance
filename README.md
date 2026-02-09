@@ -56,7 +56,7 @@ Le modèle Ridge optimisé permet de prédire les scores d'examen avec une erreu
 
 ## Structure du projet
 ```
-student-performance/
+Projet_Student_Performance/
 ├── data/
 │   └── raw/
 │       └── StudentPerformanceFactors.csv
@@ -80,10 +80,10 @@ jupyter notebook
 
 ## Auteurs
 
-ADIGBONON Mahoutondji Thérèse Rodica
-CAMARA Moussa
-DIOP Seynabou Mbayé Ba Souna
-DJIDOHOKPIN Samuel
+- ADIGBONON Mahoutondji Thérèse Rodica
+- CAMARA Moussa
+- DIOP Seynabou Mbayé Ba Souna
+- DJIDOHOKPIN Samuel
 
 ## Date
 
