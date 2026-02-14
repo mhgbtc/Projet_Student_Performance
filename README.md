@@ -64,7 +64,8 @@ Projet_Student_Performance/
 │   ├── 01_EDA.ipynb
 │   └── 02_Modeling.ipynb
 ├── src/
-│   └── preprocessing.py
+│   ├── preprocessing.py
+│   └── test_preprocessing.py
 ├── models/
 │   ├── final_model.pkl
 │   └── model_metrics.csv

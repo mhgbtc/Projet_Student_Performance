@@ -20,7 +20,7 @@ def preprocess_pipeline(filepath):
     # 2. Correction des outliers
     df = handle_outliers(df)
     
-    # 3. REMPLISSAGE DES VALEURS MANQUANTES (SANS inplace)
+    # 3. REMPLISSAGE DES VALEURS MANQUANTES
     df['Teacher_Quality'] = df['Teacher_Quality'].fillna(df['Teacher_Quality'].mode()[0])
     df['Parental_Education_Level'] = df['Parental_Education_Level'].fillna(df['Parental_Education_Level'].mode()[0])
     df['Distance_from_Home'] = df['Distance_from_Home'].fillna(df['Distance_from_Home'].mode()[0])
